@@ -45,9 +45,10 @@ function runSpider(plugins::SpiderPlugin...;
         fileinfo["current_output_dir"] = curro
         fileinfo["input_filename"] = ifname
         fileinfo["output_filename"] = ofname
+        fileinfo["folderstring"] = folderstring
 
         for P in plugins
-          mdstring = processSource(P,mdstring,fileinfo;args...)
+          mdstring = processSource!(P,mdstring,fileinfo;args...)
         end
 
         #

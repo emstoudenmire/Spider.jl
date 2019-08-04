@@ -225,10 +225,10 @@ end
 struct BibTexRefs <: SpiderPlugin
 end
 
-function processSource(B::BibTexRefs,
-                       source::AbstractString,
-                       fileinfo::FileInfo;
-                       args...)
+function processSource!(B::BibTexRefs,
+                        source::AbstractString,
+                        fileinfo::FileInfo;
+                        args...)
   
   idir = fileinfo["current_input_dir"]
   basename = fileinfo["basename"]

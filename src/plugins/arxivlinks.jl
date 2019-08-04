@@ -1,16 +1,12 @@
 export ArxivLinks
 
-#
-# Process arxiv preprint links
-# 
-
 struct ArxivLinks <: SpiderPlugin
 end
 
-function processSource(A::ArxivLinks,
-                       source::AbstractString,
-                       fileinfo::FileInfo;
-                       args...)
+function processSource!(A::ArxivLinks,
+                        source::AbstractString,
+                        fileinfo::FileInfo;
+                        args...)
   link_re = r"(arxiv|cond-mat|quant-ph|math|math-ph|physics)[/:]\W*?([\d\.]+)"i
   res = ""
   pos = 1
@@ -34,10 +30,4 @@ function processSource(A::ArxivLinks,
     res *= source[pos:end]
   end
   return res
-end
-
-function processHTML(A::ArxivLinks,
-                     html::AbstractString,
-                     fileinfo::FileInfo;
-                     args...)
 end

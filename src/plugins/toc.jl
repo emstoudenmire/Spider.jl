@@ -6,10 +6,10 @@ struct TOC <: SpiderPlugin
   TOC(tok::String) = new(tok)
 end
 
-function processSource(toc::TOC,
-                       source::AbstractString,
-                       fileinfo::FileInfo;
-                       args...)
+function processSource!(toc::TOC,
+                        source::AbstractString,
+                        fileinfo::FileInfo;
+                        args...)
   toc_re = Regex(toc.token,"is")
   if occursin(toc_re,source)
     output = ""
