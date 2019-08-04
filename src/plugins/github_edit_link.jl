@@ -1,7 +1,23 @@
+export GithubEditLink
 
-function printEditFooter(of::IOStream,fname::String)
-  template_edit_footer = open("template_edit_footer.html") do file read(file,String) end
-  link = "https://github.com/TensorNetwork/tensornetwork.org/edit/master/"*fname
-  out = replace(template_edit_footer,r"{github_link}" => link)
-  print(of,out)
+struct GithubEditLink <: SpiderPlugin
+  template::String
+  reponame::String
+  function GithubEditLink(reponame::String)
+    default_template = """
+    <br/>
+    <a href="{github_link}" target="_blank">Edit This Page</a>
+    <br/>
+    """
+    return new(default_template,reponame)
+  end
+end
+
+function processHTML(G::GithubEditLink,
+                     html::AbstractString,
+                     fileinfo::FileInfo;
+                     args...)
+  link = "https://github.com/$(G.reponame)/edit/master/"*fileinfo["input_filename"]
+  lhtml = replace(G.template,r"{github_link}" => link)
+  return html*lhtml
 end

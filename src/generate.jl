@@ -79,11 +79,6 @@ function runSpider(plugins::SpiderPlugin...;
 
           print(of,html)
 
-          #
-          # Plugin: Github Edit Footer Link
-          #
-          printEditFooter(of,ifname)
-
           if !isnothing(footer_file)
             print(of,footer_file)
           end
