@@ -9,10 +9,20 @@ function runSpider(plugins::SpiderPlugin...;
   odir = getArg(args,:output_dir)
   clear_odir = getArg(args,:clear_output_dir,false)
   md_parser = getArg(args,:md_parser,"python -m markdown ")
+  header_filename = getArg(args,:header_file,"")
+  footer_filename = getArg(args,:footer_file,"")
 
-  header_prenav = open("header_prenav.html") do file read(file,String) end
-  header_postnav = open("header_postnav.html") do file read(file,String) end
-  footer = open("footer.html") do file read(file,String) end
+  if !isempty(header_filename)
+    header_file = open(header_filename) do file read(file,String) end
+  else
+    header_file = Nothing
+  end
+
+  if !isempty(footer_filename)
+    footer_file = open(footer_filename) do file read(file,String) end
+  else
+    footer_file = Nothing
+  end
 
   run(`mkdir -p $odir`)
   if clear_odir
@@ -39,6 +49,7 @@ function runSpider(plugins::SpiderPlugin...;
         mdstring = read(ifname,String)
 
         fileinfo = FileInfo()
+        fileinfo["filename"] = f
         fileinfo["basename"] = basename
         fileinfo["extension"] = extension
         fileinfo["current_input_dir"] = curri
@@ -62,34 +73,10 @@ function runSpider(plugins::SpiderPlugin...;
         end
 
         open(ofname,"w") do of
-          print(of,header_prenav)
-
-          #
-          # Put in backlinks
-          # TODO: turn into plugin
-          #
-          if length(folders) > 0 || f!="index.md" #<-- don't show for main page
-            print(of,"<tr><td></td><td class='backlinks'>")
-            print(of,"<a href='/'>main</a>/")
-            tfold = "/"
-            for fold in folders[1:end-1]
-              tfold *= fold * "/"
-              print(of,"<a href=\"$tfold\">$fold</a>/")
-            end
-            if f!="index.md" 
-              if length(folders) > 0 
-                  fold = folders[end]
-                  tfold *= fold * "/"
-                  print(of,"<a href=\"$tfold\">$fold</a>/")
-              end
-              print(of,basename)
-            else
-              (length(folders) > 0) && print(of,"$(folders[end])/")
-            end
-            print(of,"</td></tr>")
+          if !isnothing(header_file)
+            print(of,header_file)
           end
 
-          print(of,header_postnav)
           print(of,html)
 
           #
@@ -97,7 +84,9 @@ function runSpider(plugins::SpiderPlugin...;
           #
           printEditFooter(of,ifname)
 
-          print(of,footer)
+          if !isnothing(footer_file)
+            print(of,footer_file)
+          end
         end
         run(`rm -f _tmp_file.md`)
 
