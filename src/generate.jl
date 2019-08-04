@@ -32,14 +32,20 @@ function runSpider(plugins::SpiderPlugin...;
 
     for f in files
       (f[1]=='.') && continue
-      (base,ext) = split(f,".")
+      (basename,extension) = split(f,".")
       ifname = curri*"/"*f
-      if ext == "md"
-        ofname = curro*"/"*base*".html"
+      if extension == "md"
+        ofname = curro*"/"*basename*".html"
         mdstring = read(ifname,String)
 
+        fileinfo = FileInfo()
+        fileinfo["basename"] = basename
+        fileinfo["extension"] = extension
+        fileinfo["current_input_dir"] = curri
+        fileinfo["current_output_dir"] = curro
+
         for P in plugins
-          mdstring = processSource(P,mdstring,base,ext,curri;args...)
+          mdstring = processSource(P,mdstring,fileinfo;args...)
         end
 
         #
@@ -94,7 +100,7 @@ function runSpider(plugins::SpiderPlugin...;
                   tfold *= fold * "/"
                   print(of,"<a href=\"$tfold\">$fold</a>/")
               end
-              print(of,base)
+              print(of,basename)
             else
               (length(folders) > 0) && print(of,"$(folders[end])/")
             end
@@ -118,8 +124,4 @@ function runSpider(plugins::SpiderPlugin...;
       end
     end
   end
-end
-
-function runSpider(args::ArgDict)
-  runSpider(SpiderPlugin[],args)
 end

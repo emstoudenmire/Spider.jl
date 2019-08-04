@@ -1,3 +1,6 @@
+export FileInfo
+
+const FileInfo = Dict{String,String}
 
 function pause() 
   a = readline()

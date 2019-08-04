@@ -1,4 +1,4 @@
-export BibTexPlugin
+export BibTexRefs
 
 #
 # Example of a BibTex entry:
@@ -222,16 +222,17 @@ function generateRefs(citenums,btentries)
   return rhtml
 end
 
-struct BibTexPlugin <: SpiderPlugin
+struct BibTexRefs <: SpiderPlugin
 end
 
-function processSource(B::BibTexPlugin,
+function processSource(B::BibTexRefs,
                        source::AbstractString,
-                       basename::AbstractString,
-                       ext::AbstractString,
-                       idir::AbstractString;
+                       fileinfo::FileInfo;
                        args...)
   
+  idir = fileinfo["current_input_dir"]
+  basename = fileinfo["basename"]
+
   nsource = source
   btfile = idir*"/"*basename*".bib"
   has_refs = isfile(btfile)
@@ -240,14 +241,19 @@ function processSource(B::BibTexPlugin,
     bt = parseBibTex(btfile)
     refmd = generateRefs(citenums,bt)
     #
-    # TODO: put a random token here and replace in processHTML
+    # TODO: add option to have references
+    #       appear anywhere in document
+    #       by finding and replacing a
+    #       special keyword e.g. ==References==
+    #       that is customizable
     #
     nsource *= refmd
   end
   return nsource
 end
 
-function processHTML(B::BibTexPlugin,
-                     html::AbstractString;
+function processHTML(B::BibTexRefs,
+                     html::AbstractString,
+                     fileinfo::FileInfo;
                      args...)
 end

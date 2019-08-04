@@ -6,16 +6,12 @@ abstract type SpiderPlugin end
 
 function processSource(P::SpiderPlugin,
                        source::AbstractString,
-                       basename::AbstractString,
-                       ext::AbstractString,
-                       idir::AbstractString,
-                       args::ArgDict)
+                       fileinfo::FileInfo;
+                       args...)
 end
 
 function processHTML(P::SpiderPlugin,
                      html::AbstractString,
-                     basename::AbstractString,
-                     ext::AbstractString,
-                     idir::AbstractString,
-                     args::ArgDict)
+                     fileinfo::FileInfo;
+                     args...)
 end
