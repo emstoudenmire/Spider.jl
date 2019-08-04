@@ -1,4 +1,3 @@
-export ArgDict
 
 function pause() 
   a = readline()
