@@ -2,9 +2,6 @@ export runSpider
 
 function runSpider(plugins::SpiderPlugin...;
                    args...)
-  #
-  # Get input options
-  #
   idir = getArg(args,:source_dir)
   odir = getArg(args,:output_dir)
   clear_odir = getArg(args,:clear_output_dir,false)
@@ -30,11 +27,13 @@ function runSpider(plugins::SpiderPlugin...;
   end
 
   for (root,dirs,files) in walkdir(idir)
-    folderstring = root[4:end]
+    offset = findfirst("/",root)
+    folderstring = ""
+    if !isnothing(offset)
+      folderstring = root[offset[1]:end]
+    end
     curri = idir * folderstring
     curro = odir * folderstring
-
-    folders = split(folderstring,"/")[2:end]
 
     for d in dirs
       run(`mkdir -p $curro/$d`)
