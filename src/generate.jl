@@ -63,11 +63,6 @@ function runSpider(plugins::SpiderPlugin...;
         #
         mdstring = processWikiLinks(mdstring,ifname)
 
-        #
-        # Plugin: ArxivLinks
-        #
-        mdstring = processArxivLinks(mdstring)
-
         open("_tmp_file.md","w") do tf
           print(tf,mdstring)
         end

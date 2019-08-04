@@ -1,15 +1,25 @@
+export ArxivLinks
 
 #
 # Process arxiv preprint links
 # 
-function processArxivLinks(html::String)
+
+struct ArxivLinks <: SpiderPlugin
+end
+
+function processSource(A::ArxivLinks,
+                       source::AbstractString,
+                       fileinfo::FileInfo;
+                       args...)
+
+
   link_re = r"(arxiv|cond-mat|quant-ph|math|math-ph|physics)[/:]\W*?([\d\.]+)"i
   res = ""
   pos = 1
   match = false
-  for m in eachmatch(link_re,html)
+  for m in eachmatch(link_re,source)
     match = true
-    res *= html[pos:m.offset-1]
+    res *= source[pos:m.offset-1]
     prefix = m.captures[1]
     number = m.captures[2]
     if lowercase(prefix) == "arxiv"
@@ -21,28 +31,15 @@ function processArxivLinks(html::String)
     pos = m.offset+length(m.match)
   end
   if !match 
-    return html 
+    return source 
   else
-    res *= html[pos:end]
+    res *= source[pos:end]
   end
   return res
 end
 
-function processCondMatLinks(html::String)
-  link_re = r"arxiv:\W*?(\d+?\.\d+)"
-  res = ""
-  pos = 1
-  match = false
-  for m in eachmatch(link_re,html)
-    match = true
-    res *= html[pos:m.offset-1]
-    res *= "arxiv:["*m.captures[1]*"](https://arxiv.org/abs/"*m.captures[1]*")"
-    pos = m.offset+length(m.match)
-  end
-  if !match 
-    return html 
-  else
-    res *= html[pos:end]
-  end
-  return res
+function processHTML(A::ArxivLinks,
+                     html::AbstractString,
+                     fileinfo::FileInfo;
+                     args...)
 end
