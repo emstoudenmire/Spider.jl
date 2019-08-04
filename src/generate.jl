@@ -51,21 +51,15 @@ function runSpider(plugins::SpiderPlugin...;
           mdstring = processSource!(P,mdstring,fileinfo;args...)
         end
 
-        #
-        # Plugin: MathJax
-        #
-        (mdstring,mjlist) = processMathJax(mdstring)
-
         open("_tmp_file.md","w") do tf
           print(tf,mdstring)
         end
         sp_md_command = split(md_parser)
         html = read(`$sp_md_command _tmp_file.md`,String)
 
-        #
-        # Restore HTML: MathJax
-        #
-        html = restoreMathJax(html,mjlist)
+        for P in plugins
+          html = processHTML(P,html,fileinfo;args...)
+        end
 
         open(ofname,"w") do of
           print(of,header_prenav)

@@ -1,31 +1,40 @@
-#
-# Process MathJax
-# 
-function processMathJax(html::String)
+export MathJax
+
+mutable struct MathJax <: SpiderPlugin
+  mjlist::Vector{String}
+  MathJax() = new(Vector{String}(undef,0))
+end
+
+function processSource!(M::MathJax,
+                        source::AbstractString,
+                        fileinfo::FileInfo;
+                        args...)
   mj_re = r"(\@\@.+?\@\@|\$.+?\$|\\begin{equation}.+?\\end{equation}|\\begin{equation\*}.+?\\end{equation\*})"s
-  mjlist = String[]
   res = ""
   pos = 1
   match = false
-  for m in eachmatch(mj_re,html)
+  for m in eachmatch(mj_re,source)
     match = true
-    res *= html[pos:m.offset-1]
+    res *= source[pos:m.offset-1]
     #res *= "\n\n<div>"*m.captures[1]*"</div>\n\n"
-    push!(mjlist,m.captures[1])
-    res *= "(MathJax$(length(mjlist)))"
+    push!(M.mjlist,m.captures[1])
+    res *= "(MathJax$(length(M.mjlist)))"
     pos = m.offset+length(m.match)
   end
   if match 
-    res *= html[pos:end]
+    res *= source[pos:end]
   else
-    res = html
+    res = source
   end
-  return (res,mjlist)
+  return res
 end
 
-function restoreMathJax(html::String,mjlist::Array{String,1})
+function processHTML(M::MathJax,
+                     html::AbstractString,
+                     fileinfo::FileInfo;
+                     args...)
   res = html
-  for (n,mj) in enumerate(mjlist)
+  for (n,mj) in enumerate(M.mjlist)
     res = replace(res,"(MathJax$n)" => mj)
   end
   return res
