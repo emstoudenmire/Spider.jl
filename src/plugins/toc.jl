@@ -1,10 +1,17 @@
+export TOC
 
-#
-# Generate a Table of Contents if Requested
-# 
-function generateTOC(input::String)
-  toc_re = r"<!--TOC-->"is
-  if occursin(toc_re,input)
+struct TOC <: SpiderPlugin
+  token::String
+  TOC() = new("<!--TOC-->")
+  TOC(tok::String) = new(tok)
+end
+
+function processSource(toc::TOC,
+                       source::AbstractString,
+                       fileinfo::FileInfo;
+                       args...)
+  toc_re = Regex(toc.token,"is")
+  if occursin(toc_re,source)
     output = ""
     toc_html = "\n\n\n<div class=\"toc\">\n"
     toc_html *= "<b>Table of Contents</b><br/><br/>\n"
@@ -12,9 +19,9 @@ function generateTOC(input::String)
     sec_re = r"\n(#+)(.*)"
     count = 1
     pos = 1
-    for m in eachmatch(sec_re,input)
+    for m in eachmatch(sec_re,source)
       nlev = length(m.captures[1])
-      output *= input[pos:m.offset-1]
+      output *= source[pos:m.offset-1]
       if nlev > 1
         output *= " <a name=\"toc_$count\"></a>\n"
         name = strip(convert(String,m.captures[2]))
@@ -37,9 +44,9 @@ function generateTOC(input::String)
     #  toc_html *= "<li><a href=\"#toc_refs\">References</a></li>\n"
     #end
     toc_html *= "</ul></div>\n\n\n"
-    output *= input[pos:end]
+    output *= source[pos:end]
     #println(toc_html)
     return replace(output,toc_re => toc_html)
   end
-  return input
+  return source
 end

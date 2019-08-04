@@ -49,11 +49,6 @@ function runSpider(plugins::SpiderPlugin...;
         end
 
         #
-        # Plugin: TOC
-        #
-        mdstring = generateTOC(mdstring)
-
-        #
         # Plugin: MathJax
         #
         (mdstring,mjlist) = processMathJax(mdstring)

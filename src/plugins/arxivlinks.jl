@@ -11,8 +11,6 @@ function processSource(A::ArxivLinks,
                        source::AbstractString,
                        fileinfo::FileInfo;
                        args...)
-
-
   link_re = r"(arxiv|cond-mat|quant-ph|math|math-ph|physics)[/:]\W*?([\d\.]+)"i
   res = ""
   pos = 1
