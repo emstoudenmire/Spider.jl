@@ -251,9 +251,3 @@ function processSource(B::BibTexRefs,
   end
   return nsource
 end
-
-function processHTML(B::BibTexRefs,
-                     html::AbstractString,
-                     fileinfo::FileInfo;
-                     args...)
-end
