@@ -43,6 +43,8 @@ function runSpider(plugins::SpiderPlugin...;
         fileinfo["extension"] = extension
         fileinfo["current_input_dir"] = curri
         fileinfo["current_output_dir"] = curro
+        fileinfo["input_filename"] = ifname
+        fileinfo["output_filename"] = ofname
 
         for P in plugins
           mdstring = processSource(P,mdstring,fileinfo;args...)
@@ -52,11 +54,6 @@ function runSpider(plugins::SpiderPlugin...;
         # Plugin: MathJax
         #
         (mdstring,mjlist) = processMathJax(mdstring)
-
-        #
-        # Plugin: WikiLinks
-        #
-        mdstring = processWikiLinks(mdstring,ifname)
 
         open("_tmp_file.md","w") do tf
           print(tf,mdstring)

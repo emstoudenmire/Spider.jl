@@ -1,17 +1,22 @@
+export WikiLinks
 
-#
-# Process wiki-style links
-# 
-function processWikiLinks(html::String,ifname::String)
+struct WikiLinks <: SpiderPlugin
+end
+
+function processSource(W::WikiLinks,
+                       source::AbstractString,
+                       fileinfo::FileInfo;
+                       args...)
+  ifname = fileinfo["input_filename"]
   link_re = r"\[\[(.+?)\|(.*?)\]\]"
   sub_re = r"(.*?)(#.*)"
   missing_links = String[]
   res = ""
   pos = 1
   match = false
-  for m in eachmatch(link_re,html)
+  for m in eachmatch(link_re,source)
     match = true
-    res *= html[pos:m.offset-1]
+    res *= source[pos:m.offset-1]
     target = convert(String,m.captures[2])
 
     #If link has a "#" in it, split into target and sublink
@@ -38,9 +43,9 @@ function processWikiLinks(html::String,ifname::String)
     end
   end
   if !match 
-    return html 
+    return source 
   else
-    res *= html[pos:end]
+    res *= source[pos:end]
   end
   return res
 end
