@@ -19,3 +19,27 @@ function getArg(args::ArgDict,
   end
   return default
 end
+
+#function getArg(args::ArgDict,
+#                key::String,
+#                default=Nothing)
+#  if haskey(args,key)
+#    return args[key]
+#  end
+#  if default == Nothing
+#    throw(ArgumentError("key \"$key\" not found in argument dictionary"))
+#  end
+#  return default
+#end
+
+function getArg(args,
+                key::Symbol,
+                default=Nothing)
+  if haskey(args,key)
+    return args[key]
+  end
+  if default == Nothing
+    throw(ArgumentError("key $key not found in argument dictionary"))
+  end
+  return default
+end

@@ -1,14 +1,14 @@
 export runSpider
 
-function runSpider(plugins::Vector{SpiderPlugin},
-                   args::ArgDict)
+function runSpider(plugins::SpiderPlugin...;
+                   args...)
   #
   # Get input options
   #
-  idir = getArg(args,"source_dir")
-  odir = getArg(args,"output_dir")
-  clear_odir = getArg(args,"clear_output_dir",false)
-  md_parser = getArg(args,"md_parser","python -m markdown ")
+  idir = getArg(args,:source_dir)
+  odir = getArg(args,:output_dir)
+  clear_odir = getArg(args,:clear_output_dir,false)
+  md_parser = getArg(args,:md_parser,"python -m markdown ")
 
   header_prenav = open("header_prenav.html") do file read(file,String) end
   header_postnav = open("header_postnav.html") do file read(file,String) end
@@ -39,7 +39,7 @@ function runSpider(plugins::Vector{SpiderPlugin},
         mdstring = read(ifname,String)
 
         for P in plugins
-          mdstring = processSource(P,mdstring,base,ext,curri,args)
+          mdstring = processSource(P,mdstring,base,ext,curri;args...)
         end
 
         #

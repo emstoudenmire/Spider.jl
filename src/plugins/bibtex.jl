@@ -229,8 +229,8 @@ function processSource(B::BibTexPlugin,
                        source::AbstractString,
                        basename::AbstractString,
                        ext::AbstractString,
-                       idir::AbstractString,
-                       args::ArgDict)
+                       idir::AbstractString;
+                       args...)
   
   nsource = source
   btfile = idir*"/"*basename*".bib"
@@ -248,6 +248,6 @@ function processSource(B::BibTexPlugin,
 end
 
 function processHTML(B::BibTexPlugin,
-                     html::AbstractString,
-                     args::ArgDict)
+                     html::AbstractString;
+                     args...)
 end
