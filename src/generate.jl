@@ -2,9 +2,9 @@ export runSpider
 
 function runSpider(plugins::SpiderPlugin...;
                    args...)
-  idir = getArg(args,:source_dir)
+  sdir = getArg(args,:source_dir)
   odir = getArg(args,:output_dir)
-  clear_odir = getArg(args,:clear_output_dir,false)
+  clear_output_dir = getArg(args,:clear_output_dir,false)
   md_parser = getArg(args,:md_parser,"python -m markdown ")
   header_filename = getArg(args,:header_file,"")
   footer_filename = getArg(args,:footer_file,"")
@@ -22,17 +22,17 @@ function runSpider(plugins::SpiderPlugin...;
   end
 
   run(`mkdir -p $odir`)
-  if clear_odir
-    run(`rm -f $odir/\*`)
+  if clear_output_dir
+    run(`rm -fr $odir`)
   end
 
-  for (root,dirs,files) in walkdir(idir)
+  for (root,dirs,files) in walkdir(sdir)
     offset = findfirst("/",root)
     folderstring = ""
     if !isnothing(offset)
       folderstring = root[offset[1]:end]
     end
-    curri = idir * folderstring
+    currs = sdir * folderstring
     curro = odir * folderstring
 
     for d in dirs
@@ -42,18 +42,18 @@ function runSpider(plugins::SpiderPlugin...;
     for f in files
       (f[1]=='.') && continue
       (basename,extension) = split(f,".")
-      ifname = curri*"/"*f
+      sfname = currs*"/"*f
       if extension == "md"
         ofname = curro*"/"*basename*".html"
-        mdstring = read(ifname,String)
+        mdstring = read(sfname,String)
 
         fileinfo = FileInfo()
         fileinfo["filename"] = f
         fileinfo["basename"] = basename
         fileinfo["extension"] = extension
-        fileinfo["current_input_dir"] = curri
+        fileinfo["current_source_dir"] = currs
         fileinfo["current_output_dir"] = curro
-        fileinfo["input_filename"] = ifname
+        fileinfo["source_filename"] = sfname
         fileinfo["output_filename"] = ofname
         fileinfo["folderstring"] = folderstring
 
@@ -85,7 +85,7 @@ function runSpider(plugins::SpiderPlugin...;
         run(`rm -f _tmp_file.md`)
 
       else
-        run(`cp $ifname $(curro*"/"*f)`)
+        run(`cp $sfname $(curro*"/"*f)`)
       end
     end
   end
