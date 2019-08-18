@@ -10,7 +10,7 @@ function processSource!(M::MathJax,
                         fileinfo::FileInfo;
                         args...)
   resize!(M.mjlist,0) #reset replacement list for each file
-  mj_re = r"(\@\@.+?\@\@|\$.+?\$|\\begin{equation}.+?\\end{equation}|\\begin{equation\*}.+?\\end{equation\*})"s
+  mj_re = r"(\@\@.+?\@\@|\$.+?\$|\\begin{equation}.+?\\end{equation}|\\begin{equation\*}.+?\\end{equation\*}|\\begin{align}.+?\\end{align})"s
   res = ""
   pos = 1
   match = false
