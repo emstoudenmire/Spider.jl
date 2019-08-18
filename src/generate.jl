@@ -41,7 +41,12 @@ function runSpider(plugins::SpiderPlugin...;
 
     for f in files
       (f[1]=='.') && continue
-      (basename,extension) = split(f,".")
+      if occursin(".",f)
+        (basename,extension) = split(f,".")
+      else
+        basename = f
+        extension = ""
+      end
       sfname = currs*"/"*f
       if extension == "md"
         ofname = curro*"/"*basename*".html"
