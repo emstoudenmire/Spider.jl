@@ -7,7 +7,7 @@ function processSource!(W::WikiLinks,
                         source::AbstractString,
                         fileinfo::FileInfo;
                         args...)
-  ifname = fileinfo["input_filename"]
+  sfname = fileinfo["source_filename"]
   link_re = r"\[\[(.+?)\|(.*?)\]\]"
   sub_re = r"(.*?)(#.*)"
   missing_links = String[]
@@ -37,7 +37,7 @@ function processSource!(W::WikiLinks,
     pos = m.offset+length(m.match)
   end
   if length(missing_links) > 0
-    println("Missing/Incorrect Wiki Links in File $ifname:")
+    println("Missing/Incorrect Wiki Links in File $sfname:")
     for link in missing_links
       println("  $link")
     end

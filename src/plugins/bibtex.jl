@@ -230,11 +230,11 @@ function processSource!(B::BibTexRefs,
                         fileinfo::FileInfo;
                         args...)
   
-  idir = fileinfo["current_input_dir"]
+  sdir = fileinfo["current_source_dir"]
   basename = fileinfo["basename"]
 
   nsource = source
-  btfile = idir*"/"*basename*".bib"
+  btfile = sdir*"/"*basename*".bib"
   has_refs = isfile(btfile)
   (nsource,citenums) = processCitations(nsource)
   if has_refs
