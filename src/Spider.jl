@@ -2,7 +2,7 @@ module Spider
 
 include("util.jl")
 include("plugins/plugin.jl")
-include("generate.jl")
+include("run_spider.jl")
 
 include("plugins/bibtex.jl")
 include("plugins/toc.jl")
