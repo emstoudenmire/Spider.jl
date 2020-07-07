@@ -64,7 +64,7 @@ function run_spider(plugins::SpiderPlugin...;
         fileinfo["folderstring"] = folderstring
 
         for P in plugins
-          mdstring = processSource!(P,mdstring,fileinfo;args...)
+          mdstring = process_source!(P,mdstring,fileinfo;args...)
         end
 
         #
@@ -83,7 +83,7 @@ function run_spider(plugins::SpiderPlugin...;
         htmlstr = CommonMark.html(ast)
 
         for P in plugins
-          htmlstr = processHTML(P,htmlstr,fileinfo;args...)
+          htmlstr = process_html(P,htmlstr,fileinfo;args...)
         end
 
         open(ofname,"w") do of

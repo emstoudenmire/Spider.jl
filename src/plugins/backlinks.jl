@@ -21,10 +21,10 @@ struct BackLinks <: SpiderPlugin
   BackLinks(default_pl::String) = new(default_pl)
 end
 
-function processHTML(B::BackLinks,
-                     html::AbstractString,
-                     fileinfo::FileInfo;
-                     args...)
+function process_html(B::BackLinks,
+                      html::AbstractString,
+                      fileinfo::FileInfo;
+                      args...)
   folders = split(fileinfo["folderstring"],"/")[2:end]
   filename = fileinfo["filename"]
 

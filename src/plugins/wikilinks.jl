@@ -3,10 +3,10 @@ export WikiLinks
 struct WikiLinks <: SpiderPlugin
 end
 
-function processSource!(W::WikiLinks,
-                        source::AbstractString,
-                        fileinfo::FileInfo;
-                        args...)
+function process_source!(W::WikiLinks,
+                         source::AbstractString,
+                         fileinfo::FileInfo;
+                         args...)
   sfname = fileinfo["source_filename"]
   link_re = r"\[\[(.+?)\|(.*?)\]\]"
   sub_re = r"(.*?)(#.*)"

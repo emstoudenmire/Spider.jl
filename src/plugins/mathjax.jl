@@ -5,10 +5,10 @@ mutable struct MathJax <: SpiderPlugin
   MathJax() = new(Vector{String}(undef,0))
 end
 
-function processSource!(M::MathJax,
-                        source::AbstractString,
-                        fileinfo::FileInfo;
-                        args...)
+function process_source!(M::MathJax,
+                         source::AbstractString,
+                         fileinfo::FileInfo;
+                         args...)
   resize!(M.mjlist,0) #reset replacement list for each file
   mj_re = r"(\@\@.+?\@\@|\$.+?\$|\\begin{equation}.+?\\end{equation}|\\begin{equation\*}.+?\\end{equation\*}|\\begin{align}.+?\\end{align})"s
   res = ""
@@ -30,10 +30,10 @@ function processSource!(M::MathJax,
   return res
 end
 
-function processHTML(M::MathJax,
-                     html::AbstractString,
-                     fileinfo::FileInfo;
-                     args...)
+function process_html(M::MathJax,
+                      html::AbstractString,
+                      fileinfo::FileInfo;
+                      args...)
   res = html
   for (n,mj) in enumerate(M.mjlist)
     res = replace(res,"(MathJax$n)" => mj)

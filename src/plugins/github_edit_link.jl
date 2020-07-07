@@ -13,10 +13,10 @@ struct GithubEditLink <: SpiderPlugin
   end
 end
 
-function processHTML(G::GithubEditLink,
-                     html::AbstractString,
-                     fileinfo::FileInfo;
-                     args...)
+function process_html(G::GithubEditLink,
+                      html::AbstractString,
+                      fileinfo::FileInfo;
+                      args...)
   link = "https://github.com/$(G.reponame)/edit/master/"*fileinfo["source_filename"]
   lhtml = replace(G.template,r"{github_link}" => link)
   return html*lhtml
