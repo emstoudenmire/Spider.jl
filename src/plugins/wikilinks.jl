@@ -1,6 +1,6 @@
 export WikiLinks
 
-struct WikiLinks <: SpiderPlugin
+struct WikiLinks
 end
 
 function process_source!(W::WikiLinks,

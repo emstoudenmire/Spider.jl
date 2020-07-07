@@ -1,6 +1,6 @@
 export TOC
 
-struct TOC <: SpiderPlugin
+struct TOC
   token::String
   TOC() = new("<!--TOC-->")
   TOC(tok::String) = new(tok)

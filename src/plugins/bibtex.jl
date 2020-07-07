@@ -222,7 +222,7 @@ function generateRefs(citenums,btentries)
   return rhtml
 end
 
-struct BibTexRefs <: SpiderPlugin
+struct BibTexRefs
 end
 
 function process_source!(B::BibTexRefs,

@@ -1,6 +1,6 @@
 export GithubEditLink
 
-struct GithubEditLink <: SpiderPlugin
+struct GithubEditLink
   template::String
   reponame::String
   function GithubEditLink(reponame::String)

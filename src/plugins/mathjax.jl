@@ -1,6 +1,6 @@
 export MathJax
 
-mutable struct MathJax <: SpiderPlugin
+mutable struct MathJax
   mjlist::Vector{String}
   MathJax() = new(Vector{String}(undef,0))
 end

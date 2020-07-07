@@ -1,6 +1,6 @@
 export ArxivLinks
 
-struct ArxivLinks <: SpiderPlugin
+struct ArxivLinks
 end
 
 function process_source!(A::ArxivLinks,

@@ -1,6 +1,14 @@
-export run_spider
+export run_spider,
+       process_source!,
+       process_html
 
-function run_spider(plugins::SpiderPlugin...;
+process_source!(P,source::AbstractString,
+                fileinfo::FileInfo;args...) = source
+
+process_html(P,html::AbstractString,
+             ::FileInfo; args...) = html
+
+function run_spider(plugins...;
                     args...)
   sdir = get_arg(args,:source_dir)
   odir = get_arg(args,:output_dir)

@@ -1,6 +1,6 @@
 export BackLinks
 
-struct BackLinks <: SpiderPlugin
+struct BackLinks
   postlinks::String
 
   function BackLinks()
