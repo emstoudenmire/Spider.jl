@@ -1,13 +1,13 @@
-export runSpider
+export run_spider
 
-function runSpider(plugins::SpiderPlugin...;
-                   args...)
-  sdir = getArg(args,:source_dir)
-  odir = getArg(args,:output_dir)
-  clear_output_dir = getArg(args,:clear_output_dir,false)
-  md_parser = getArg(args,:md_parser,"python -m markdown ")
-  header_filename = getArg(args,:header_file,"")
-  footer_filename = getArg(args,:footer_file,"")
+function run_spider(plugins::SpiderPlugin...;
+                    args...)
+  sdir = get_arg(args,:source_dir)
+  odir = get_arg(args,:output_dir)
+  clear_output_dir = get_arg(args,:clear_output_dir,false)
+  md_parser = get_arg(args,:md_parser,"python -m markdown ")
+  header_filename = get_arg(args,:header_file,"")
+  footer_filename = get_arg(args,:footer_file,"")
 
   if !isempty(header_filename)
     header_file = open(header_filename) do file read(file,String) end

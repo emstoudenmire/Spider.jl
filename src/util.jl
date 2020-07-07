@@ -8,14 +8,14 @@ function pause()
   (a[1]=='q') && exit(0)
 end
 
-#function getArg(args,
-#                key::Symbol,
-#                default=Nothing)
-#  if haskey(args,key)
-#    return args[key]
-#  end
-#  if default == Nothing
-#    throw(ArgumentError("key $key not found in argument dictionary"))
-#  end
-#  return default
-#end
+function get_arg(args,
+                 key,
+                 default=nothing)
+  if haskey(args,key)
+    return args[key]
+  end
+  if isnothing(default)
+    throw(ArgumentError("key $key not found in argument dictionary"))
+  end
+  return default
+end
