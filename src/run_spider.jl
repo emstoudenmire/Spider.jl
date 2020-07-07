@@ -5,9 +5,10 @@ function run_spider(plugins::SpiderPlugin...;
   sdir = get_arg(args,:source_dir)
   odir = get_arg(args,:output_dir)
   clear_output_dir = get_arg(args,:clear_output_dir,false)
-  md_parser = get_arg(args,:md_parser,"python -m markdown ")
   header_filename = get_arg(args,:header_file,"")
   footer_filename = get_arg(args,:footer_file,"")
+
+  mdparser = CommonMark.Parser()
 
   if !isempty(header_filename)
     header_file = open(header_filename) do file read(file,String) end
@@ -66,14 +67,23 @@ function run_spider(plugins::SpiderPlugin...;
           mdstring = processSource!(P,mdstring,fileinfo;args...)
         end
 
-        open("_tmp_file.md","w") do tf
-          print(tf,mdstring)
-        end
-        sp_md_command = split(md_parser)
-        html = read(`$sp_md_command _tmp_file.md`,String)
+        #
+        # Using custom parser
+        #
+        #open("_tmp_file.md","w") do tf
+        #  print(tf,mdstring)
+        #end
+        #sp_md_command = split(md_parser)
+        #html = read(`$sp_md_command _tmp_file.md`,String)
+
+        #
+        # Using CommonMark.jl
+        #
+        ast = mdparser(mdstring)
+        htmlstr = CommonMark.html(ast)
 
         for P in plugins
-          html = processHTML(P,html,fileinfo;args...)
+          htmlstr = processHTML(P,htmlstr,fileinfo;args...)
         end
 
         open(ofname,"w") do of
@@ -81,13 +91,17 @@ function run_spider(plugins::SpiderPlugin...;
             print(of,header_file)
           end
 
-          print(of,html)
+          print(of,htmlstr)
 
           if !isnothing(footer_file)
             print(of,footer_file)
           end
         end
-        run(`rm -f _tmp_file.md`)
+
+        #
+        # If using custom parser
+        #
+        #run(`rm -f _tmp_file.md`)
 
       else
         run(`cp $sfname $(curro*"/"*f)`)
