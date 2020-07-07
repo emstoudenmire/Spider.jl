@@ -3,7 +3,6 @@ module Spider
 using CommonMark
 
 include("util.jl")
-include("plugins/plugin.jl")
 include("run_spider.jl")
 
 include("plugins/bibtex.jl")
