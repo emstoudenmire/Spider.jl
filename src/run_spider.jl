@@ -70,6 +70,8 @@ function run_spider(plugins...;
         fileinfo["source_filename"] = sfname
         fileinfo["output_filename"] = ofname
         fileinfo["folderstring"] = folderstring
+        fileinfo["source_dir"] = sdir
+        fileinfo["output_dir"] = odir
 
         for P in plugins
           mdstring = process_source!(P,mdstring,fileinfo;args...)
