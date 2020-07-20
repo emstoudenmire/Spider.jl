@@ -1,5 +1,7 @@
 # Spider.jl
 
+![Tests](https://github.com/emstoudenmire/Spider.jl/workflows/Tests/badge.svg)
+
 Spider is a static website generator written in Julia that requires minimal setup,
 essentially no fixed conventions (e.g. no required directory structure), and is highly
 extensible.
