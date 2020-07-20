@@ -9,7 +9,10 @@ using Test
           footer_file="basic_footer.html")
 
   run_spider(;args...)
+  # Check html generated from Markdown:
   @test isfile("basic_output/index.html")
+  # Check non-Markdown files copied:
+  @test isfile("basic_output/style.css")
 end
 
 run(`rm -fr basic_output`)
