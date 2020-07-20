@@ -30,10 +30,10 @@ function run_spider(plugins...;
     footer_file = Nothing
   end
 
-  run(`mkdir -p $odir`)
   if clear_output_dir
     run(`rm -fr $odir`)
   end
+  run(`mkdir -p $odir`)
 
   for (root,dirs,files) in walkdir(sdir)
     offset = findfirst("/",root)
